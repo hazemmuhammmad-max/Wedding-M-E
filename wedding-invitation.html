@@ -1,0 +1,1504 @@
+<!DOCTYPE html>
+<html lang="ar" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Martina & Javier — Wedding Invitation</title>
+
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Cinzel+Decorative:wght@400;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Great+Vibes&family=Jost:wght@200;300;400&display=swap" rel="stylesheet">
+
+<style>
+/* =============================================
+   CSS VARIABLES & RESET
+   ============================================= */
+:root {
+  --cream:       #f5efe6;
+  --beige:       #e8dcc8;
+  --beige-dark:  #d4c4a8;
+  --gold:        #c9a84c;
+  --gold-light:  #e2c47a;
+  --gold-pale:   #f0dfa0;
+  --brown:       #7a5c3a;
+  --brown-dark:  #4a3420;
+  --brown-soft:  #9e7d58;
+  --white:       #fefcf8;
+  --text-dark:   #3d2b1a;
+  --text-mid:    #6b4e31;
+  --text-light:  #9e8060;
+  --sage:        #b8c4a8;
+  --blush:       #e8c8c0;
+  --rose:        #d4a0a0;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background-color: var(--cream);
+  color: var(--text-dark);
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  overflow-x: hidden;
+  cursor: default;
+}
+
+/* =============================================
+   SCROLL REVEAL ANIMATIONS
+   ============================================= */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.9s cubic-bezier(0.22,1,0.36,1), transform 0.9s cubic-bezier(0.22,1,0.36,1);
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal-delay-1 { transition-delay: 0.15s; }
+.reveal-delay-2 { transition-delay: 0.3s; }
+.reveal-delay-3 { transition-delay: 0.45s; }
+.reveal-delay-4 { transition-delay: 0.6s; }
+
+/* =============================================
+   ENVELOPE SECTION
+   ============================================= */
+#envelope-section {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: linear-gradient(145deg, #c8b898 0%, #ddd0b8 40%, #c0a878 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 1s ease 0.8s, visibility 1s ease 0.8s;
+}
+#envelope-section.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+
+.envelope-wrapper {
+  position: relative;
+  width: min(340px, 88vw);
+  perspective: 900px;
+}
+
+/* ── Full envelope container ──────────────────── */
+.envelope-body {
+  position: relative;
+  width: 100%;
+  padding-bottom: 65%;
+  border-radius: 4px;
+  box-shadow:
+    0 24px 70px rgba(74,52,32,0.4),
+    0 6px 16px rgba(74,52,32,0.22),
+    inset 0 1px 0 rgba(255,255,255,0.5);
+  /* neutral base shown behind the halves */
+  background: linear-gradient(160deg, #e8dcc8 0%, #d8c8a8 100%);
+  overflow: visible;
+}
+
+/* ── Shared half styles ──────────────────────── */
+.env-half {
+  position: absolute;
+  left: 0; right: 0;
+  overflow: hidden;
+  transition: transform 0s; /* overridden when .splitting */
+  will-change: transform;
+}
+
+/* Top half — occupies upper 50% */
+.env-top {
+  top: 0;
+  height: 50%;
+  border-radius: 4px 4px 0 0;
+  background: linear-gradient(175deg, #fdf8f0 0%, #f0e6d0 60%, #e8dcc8 100%);
+  transform-origin: top center;
+}
+
+/* decorative V-notch on bottom edge of top half */
+.env-top::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 100%;
+  background: linear-gradient(175deg, #ede0c8 0%, #d8c8a8 100%);
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  opacity: 0.6;
+}
+
+/* Bottom half — occupies lower 50% */
+.env-bottom {
+  bottom: 0;
+  height: 50%;
+  border-radius: 0 0 6px 6px;
+  background: linear-gradient(5deg, #f0e8d8 0%, #fdf8f0 100%);
+  transform-origin: bottom center;
+}
+
+/* diagonal fold lines on bottom half */
+.env-bottom::before,
+.env-bottom::after {
+  content: '';
+  position: absolute;
+  top: 0; bottom: 0;
+}
+.env-bottom::before {
+  left: 0; right: 50%;
+  background: linear-gradient(160deg, #e4d4b8 0%, #ede0c8 100%);
+  clip-path: polygon(0 0, 100% 0, 0 100%);
+  opacity: 0.55;
+}
+.env-bottom::after {
+  left: 50%; right: 0;
+  background: linear-gradient(200deg, #e4d4b8 0%, #ede0c8 100%);
+  clip-path: polygon(0 0, 100% 0, 100% 100%);
+  opacity: 0.55;
+}
+
+/* Envelope texture overlay on both halves */
+.env-top::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    90deg,
+    transparent,
+    transparent 18px,
+    rgba(201,168,76,0.05) 18px,
+    rgba(201,168,76,0.05) 19px
+  );
+  z-index: 1;
+}
+
+/* Centre seam line */
+.env-seam {
+  position: absolute;
+  top: 50%; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(201,168,76,0.45) 30%, rgba(201,168,76,0.45) 70%, transparent 100%);
+  z-index: 5;
+  pointer-events: none;
+}
+
+/* Open / split animations */
+.env-top.splitting {
+  transition: transform 0.85s cubic-bezier(0.4, 0, 0.2, 1) 0.35s;
+  transform: translateY(-108%);
+}
+.env-bottom.splitting {
+  transition: transform 0.85s cubic-bezier(0.4, 0, 0.2, 1) 0.35s;
+  transform: translateY(108%);
+}
+/* seam fades as halves separate */
+.env-seam.splitting {
+  transition: opacity 0.2s ease 0.35s;
+  opacity: 0;
+}
+
+/* ── Wax seal ─────────────────────────────────── */
+.wax-seal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  cursor: pointer;
+  outline: none;        /* remove blue focus ring */
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.28s cubic-bezier(0.34,1.56,0.64,1);
+}
+.wax-seal:hover  { transform: translate(-50%, -50%) scale(1.08); }
+.wax-seal:active { transform: translate(-50%, -50%) scale(0.96); }
+.wax-seal:focus  { outline: none; }
+
+.seal-circle {
+  width: 92px;
+  height: 92px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 33% 33%, #d4b060, #9a7028 55%, #6b4810 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow:
+    0 0 0 3px #e8cc88,
+    0 0 0 6px rgba(201,168,76,0.28),
+    0 10px 28px rgba(74,52,32,0.50),
+    inset 0 3px 5px rgba(255,225,140,0.35),
+    inset 0 -3px 5px rgba(0,0,0,0.32);
+  position: relative;
+  transition: opacity 0.45s ease, transform 0.45s ease;
+}
+.seal-circle::before {
+  content: '';
+  position: absolute;
+  inset: 7px;
+  border-radius: 50%;
+  border: 1px solid rgba(230,200,130,0.55);
+}
+.seal-circle::after {
+  content: '';
+  position: absolute;
+  inset: 14px;
+  border-radius: 50%;
+  border: 1px solid rgba(230,200,130,0.32);
+}
+/* Subtle glint */
+.seal-circle .seal-glint {
+  position: absolute;
+  top: 14px; left: 18px;
+  width: 18px; height: 10px;
+  border-radius: 50%;
+  background: rgba(255,240,180,0.22);
+  transform: rotate(-30deg);
+  pointer-events: none;
+}
+.seal-text {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 15px;
+  color: #f4e4b0;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.55);
+  letter-spacing: 1px;
+  position: relative;
+  z-index: 1;
+  user-select: none;
+}
+.seal-circle.breaking {
+  animation: sealBreak 0.55s cubic-bezier(0.4,0,0.6,1) forwards;
+}
+@keyframes sealBreak {
+  0%   { transform: scale(1);           opacity: 1; }
+  25%  { transform: scale(1.18) rotate(7deg);  }
+  55%  { transform: scale(0.88) rotate(-6deg); opacity: 0.65; }
+  100% { transform: scale(0)   rotate(22deg);  opacity: 0; }
+}
+
+.seal-hint {
+  text-align: center;
+  margin-top: 16px;
+  font-family: 'Jost', sans-serif;
+  font-size: 10px;
+  font-weight: 300;
+  letter-spacing: 3.5px;
+  text-transform: uppercase;
+  color: rgba(74,52,32,0.50);
+  transition: opacity 0.3s ease;
+}
+.seal-hint.hidden { opacity: 0; }
+
+/* ── Letter card inside envelope ─────────────── */
+.envelope-letter {
+  position: absolute;
+  left: 9%; right: 9%;
+  /* sits in the middle-ish of the envelope */
+  top: 18%; bottom: 10%;
+  background: linear-gradient(175deg, #fefcf8 0%, #f5ead8 100%);
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow:
+    0 2px 14px rgba(74,52,32,0.14),
+    inset 0 1px 0 rgba(255,255,255,0.7);
+  z-index: 1;
+  /* starts hidden behind the halves */
+  opacity: 0;
+  transform: scale(0.96);
+  transition: opacity 0.5s ease 1.1s, transform 0.5s ease 1.1s;
+}
+.envelope-letter.rising {
+  opacity: 1;
+  transform: scale(1);
+}
+.envelope-letter-text {
+  font-family: 'Cinzel', serif;
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: var(--gold);
+  text-transform: uppercase;
+  text-align: center;
+  line-height: 1.8;
+}
+
+/* =============================================
+   MAIN CONTENT (hidden until envelope opens)
+   ============================================= */
+#main-content {
+  opacity: 0;
+  transition: opacity 0.8s ease 0.4s;
+}
+#main-content.visible { opacity: 1; }
+
+/* =============================================
+   HERO SECTION
+   ============================================= */
+#hero {
+  min-height: 100vh;
+  background: linear-gradient(180deg, var(--white) 0%, var(--cream) 70%, var(--beige) 100%);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 24px 80px;
+  overflow: hidden;
+}
+
+/* Floral corner decorations */
+.floral-tl, .floral-tr, .floral-bl, .floral-br {
+  position: absolute;
+  width: 180px;
+  height: 180px;
+  opacity: 0.55;
+  pointer-events: none;
+}
+.floral-tl { top: -10px; left: -10px; transform: rotate(0deg); }
+.floral-tr { top: -10px; right: -10px; transform: scaleX(-1); }
+.floral-bl { bottom: -10px; left: -10px; transform: scaleY(-1); }
+.floral-br { bottom: -10px; right: -10px; transform: scale(-1,-1); }
+
+/* Oval frame */
+.oval-frame {
+  position: relative;
+  width: min(240px, 62vw);
+  height: min(300px, 78vw);
+  border-radius: 50% / 45%;
+  border: 2px solid var(--gold);
+  box-shadow:
+    0 0 0 6px rgba(201,168,76,0.15),
+    0 0 0 12px rgba(201,168,76,0.07),
+    0 20px 50px rgba(74,52,32,0.2);
+  background: linear-gradient(160deg, var(--beige) 0%, var(--cream) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin-bottom: 32px;
+  overflow: hidden;
+}
+.oval-frame::before {
+  content: '';
+  position: absolute;
+  inset: 6px;
+  border-radius: 50% / 45%;
+  border: 1px solid rgba(201,168,76,0.3);
+}
+.oval-inner {
+  text-align: center;
+  padding: 20px;
+  position: relative;
+  z-index: 1;
+}
+.oval-pre {
+  font-family: 'Jost', sans-serif;
+  font-weight: 200;
+  font-size: 10px;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  color: var(--text-light);
+  margin-bottom: 8px;
+}
+.couple-names {
+  font-family: 'Great Vibes', cursive;
+  font-size: clamp(36px, 10vw, 52px);
+  color: var(--brown-dark);
+  line-height: 1.1;
+  background: linear-gradient(135deg, var(--brown-dark), var(--gold));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.ampersand {
+  font-size: 0.65em;
+  display: block;
+  margin: -4px 0;
+  color: var(--gold);
+  -webkit-text-fill-color: var(--gold);
+}
+.oval-date {
+  font-family: 'Jost', sans-serif;
+  font-weight: 200;
+  font-size: 10px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--text-light);
+  margin-top: 10px;
+}
+
+/* Hero text below oval */
+.hero-tagline {
+  font-family: 'Cinzel', serif;
+  font-size: 10px;
+  letter-spacing: 6px;
+  text-transform: uppercase;
+  color: var(--gold);
+  text-align: center;
+  margin-bottom: 8px;
+}
+.hero-sub {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 17px;
+  color: var(--text-mid);
+  text-align: center;
+}
+
+/* Beach parallax strip */
+.beach-strip {
+  position: absolute;
+  bottom: 0;
+  left: 0; right: 0;
+  height: 100px;
+  background: linear-gradient(180deg,
+    transparent 0%,
+    rgba(184,196,168,0.2) 40%,
+    rgba(212,200,168,0.4) 70%,
+    rgba(200,184,152,0.6) 100%
+  );
+  overflow: hidden;
+}
+.beach-strip::before {
+  content: '';
+  position: absolute;
+  bottom: 10px; left: 0; right: 0;
+  height: 30px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 30'%3E%3Cpath d='M0,15 Q150,0 300,15 Q450,30 600,15 Q750,0 900,15 Q1050,30 1200,15 L1200,30 L0,30 Z' fill='rgba(201,168,76,0.25)'/%3E%3C/svg%3E") repeat-x bottom;
+  animation: wave 4s ease-in-out infinite;
+}
+.beach-strip::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 20px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 20'%3E%3Cpath d='M0,10 Q200,0 400,10 Q600,20 800,10 Q1000,0 1200,10 L1200,20 L0,20 Z' fill='rgba(201,168,76,0.35)'/%3E%3C/svg%3E") repeat-x bottom;
+  animation: wave 3s ease-in-out 0.5s infinite reverse;
+}
+@keyframes wave {
+  0%,100% { transform: translateX(0); }
+  50%      { transform: translateX(-30px); }
+}
+
+/* Gold divider */
+.gold-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  max-width: 320px;
+  margin: 28px auto;
+}
+.gold-divider .line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+.gold-divider .diamond {
+  width: 6px; height: 6px;
+  background: var(--gold);
+  transform: rotate(45deg);
+  flex-shrink: 0;
+}
+
+/* =============================================
+   COUNTDOWN SECTION
+   ============================================= */
+#countdown {
+  padding: 80px 24px;
+  background: linear-gradient(160deg, var(--brown-dark) 0%, #3d2010 100%);
+  position: relative;
+  overflow: hidden;
+}
+#countdown::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 30px,
+    rgba(201,168,76,0.03) 30px,
+    rgba(201,168,76,0.03) 31px
+  );
+}
+.countdown-title {
+  font-family: 'Cinzel', serif;
+  font-size: 10px;
+  letter-spacing: 6px;
+  text-transform: uppercase;
+  color: var(--gold-light);
+  text-align: center;
+  margin-bottom: 6px;
+}
+.countdown-subtitle {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 22px;
+  color: rgba(255,255,255,0.6);
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+/* Ornate frame around countdown */
+.countdown-frame {
+  max-width: 380px;
+  margin: 0 auto;
+  border: 1px solid rgba(201,168,76,0.3);
+  padding: 32px 20px;
+  position: relative;
+}
+.countdown-frame::before,
+.countdown-frame::after {
+  content: '';
+  position: absolute;
+  width: 24px; height: 24px;
+  border-color: var(--gold);
+  border-style: solid;
+}
+.countdown-frame::before {
+  top: -2px; left: -2px;
+  border-width: 2px 0 0 2px;
+}
+.countdown-frame::after {
+  bottom: -2px; right: -2px;
+  border-width: 0 2px 2px 0;
+}
+.countdown-inner-frame {
+  position: absolute;
+  top: 4px; right: 4px; bottom: 4px; left: 4px;
+  pointer-events: none;
+}
+.countdown-inner-frame::before,
+.countdown-inner-frame::after {
+  content: '';
+  position: absolute;
+  width: 16px; height: 16px;
+  border-color: rgba(201,168,76,0.4);
+  border-style: solid;
+}
+.countdown-inner-frame::before { top: 0; right: 0; border-width: 1px 1px 0 0; }
+.countdown-inner-frame::after  { bottom: 0; left: 0; border-width: 0 0 1px 1px; }
+
+.countdown-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+.countdown-item {
+  text-align: center;
+}
+.countdown-number {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(28px, 8vw, 40px);
+  font-weight: 600;
+  color: var(--gold-light);
+  line-height: 1;
+  display: block;
+  text-shadow: 0 0 20px rgba(201,168,76,0.4);
+}
+.countdown-label {
+  font-family: 'Jost', sans-serif;
+  font-weight: 200;
+  font-size: 8px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.4);
+  display: block;
+  margin-top: 6px;
+}
+.countdown-sep {
+  font-family: 'Cinzel', serif;
+  font-size: 24px;
+  color: var(--gold);
+  line-height: 1;
+  align-self: start;
+  padding-top: 4px;
+}
+
+/* =============================================
+   INVITATION TEXT SECTION
+   ============================================= */
+#invitation {
+  padding: 80px 32px;
+  background: var(--white);
+  text-align: center;
+  position: relative;
+}
+.invite-pre {
+  font-family: 'Jost', sans-serif;
+  font-weight: 200;
+  font-size: 10px;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 24px;
+}
+.invite-heading {
+  font-family: 'Great Vibes', cursive;
+  font-size: clamp(42px, 12vw, 64px);
+  background: linear-gradient(135deg, var(--brown-dark), var(--gold));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 32px;
+  line-height: 1.2;
+}
+.invite-body {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 17px;
+  font-weight: 300;
+  line-height: 1.9;
+  color: var(--text-mid);
+  max-width: 340px;
+  margin: 0 auto 24px;
+}
+.invite-body em {
+  font-style: italic;
+  color: var(--brown);
+}
+.rose-motif {
+  font-size: 28px;
+  display: block;
+  margin: 16px auto;
+  opacity: 0.6;
+}
+
+/* Small floral SVG divider */
+.floral-divider {
+  margin: 24px auto;
+  display: block;
+  opacity: 0.5;
+}
+
+/* =============================================
+   CEREMONY DETAILS SECTION
+   ============================================= */
+#details {
+  padding: 80px 24px;
+  background:
+    repeating-linear-gradient(
+      90deg,
+      rgba(245,239,230,0.9) 0px, rgba(245,239,230,0.9) 28px,
+      rgba(255,252,248,0.9) 28px, rgba(255,252,248,0.9) 56px
+    );
+  position: relative;
+}
+#details::before {
+  content: '';
+  position: absolute;
+  inset: 16px;
+  border: 1px solid rgba(201,168,76,0.2);
+  pointer-events: none;
+}
+#details::after {
+  content: '';
+  position: absolute;
+  inset: 22px;
+  border: 1px solid rgba(201,168,76,0.1);
+  pointer-events: none;
+}
+.details-title {
+  font-family: 'Cinzel', serif;
+  font-size: 11px;
+  letter-spacing: 6px;
+  text-transform: uppercase;
+  color: var(--gold);
+  text-align: center;
+  margin-bottom: 40px;
+}
+.details-card {
+  background: rgba(255,252,248,0.9);
+  border: 1px solid rgba(201,168,76,0.25);
+  max-width: 360px;
+  margin: 0 auto 16px;
+  padding: 28px 28px;
+  position: relative;
+  text-align: center;
+}
+.details-card-icon {
+  font-size: 22px;
+  margin-bottom: 12px;
+  display: block;
+}
+.details-card h3 {
+  font-family: 'Cinzel', serif;
+  font-size: 12px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 16px;
+}
+.details-card .detail-item {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 16px;
+  color: var(--text-mid);
+  line-height: 1.7;
+  margin-bottom: 4px;
+}
+.details-card .detail-item strong {
+  font-weight: 500;
+  color: var(--brown-dark);
+  display: block;
+  font-size: 14px;
+  font-family: 'Jost', sans-serif;
+  font-weight: 300;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-size: 9px;
+  margin-bottom: 4px;
+}
+
+.btn-group {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 24px;
+  flex-wrap: wrap;
+}
+.btn-gold {
+  font-family: 'Jost', sans-serif;
+  font-weight: 300;
+  font-size: 9px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--white);
+  background: linear-gradient(135deg, var(--brown) 0%, var(--gold) 100%);
+  border: none;
+  padding: 12px 20px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+  box-shadow: 0 4px 16px rgba(74,52,32,0.25);
+}
+.btn-gold:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(74,52,32,0.3);
+  opacity: 0.9;
+}
+.btn-outline {
+  font-family: 'Jost', sans-serif;
+  font-weight: 300;
+  font-size: 9px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--brown);
+  background: transparent;
+  border: 1px solid var(--gold);
+  padding: 12px 20px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+.btn-outline:hover {
+  background: rgba(201,168,76,0.08);
+  transform: translateY(-2px);
+}
+
+/* =============================================
+   DRESS CODE & PROGRAMME
+   ============================================= */
+#programme {
+  padding: 80px 24px;
+  background: linear-gradient(160deg, var(--cream) 0%, var(--beige) 100%);
+}
+.section-title {
+  font-family: 'Cinzel', serif;
+  font-size: 11px;
+  letter-spacing: 6px;
+  text-transform: uppercase;
+  color: var(--gold);
+  text-align: center;
+  margin-bottom: 6px;
+}
+.section-subtitle {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 28px;
+  color: var(--brown-dark);
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+/* Dress Code */
+.dress-code-box {
+  max-width: 360px;
+  margin: 0 auto 56px;
+  background: var(--white);
+  border: 1px solid rgba(201,168,76,0.25);
+  padding: 32px 24px;
+  text-align: center;
+  position: relative;
+}
+.dress-icons {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  margin-bottom: 16px;
+}
+.dress-icon {
+  font-size: 36px;
+  filter: drop-shadow(0 2px 4px rgba(74,52,32,0.2));
+}
+.dress-type {
+  font-family: 'Cinzel', serif;
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: 3px;
+  color: var(--brown-dark);
+  margin-bottom: 8px;
+}
+.dress-note {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 15px;
+  font-style: italic;
+  color: var(--text-light);
+  line-height: 1.6;
+}
+.dress-palette {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin-top: 16px;
+}
+.palette-swatch {
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  border: 1px solid rgba(0,0,0,0.1);
+}
+
+/* Timeline */
+.timeline {
+  max-width: 360px;
+  margin: 0 auto;
+  position: relative;
+}
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0; bottom: 0;
+  width: 1px;
+  background: linear-gradient(180deg, transparent, var(--gold), var(--gold), transparent);
+  transform: translateX(-50%);
+}
+.timeline-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 32px;
+  position: relative;
+}
+.timeline-item:nth-child(odd) { flex-direction: row; }
+.timeline-item:nth-child(even) { flex-direction: row-reverse; }
+
+.timeline-content {
+  flex: 1;
+  text-align: right;
+}
+.timeline-item:nth-child(even) .timeline-content { text-align: left; }
+
+.timeline-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--gold);
+  border: 2px solid var(--cream);
+  box-shadow: 0 0 0 3px rgba(201,168,76,0.3);
+  flex-shrink: 0;
+  margin-top: 4px;
+  position: relative;
+  z-index: 1;
+}
+.timeline-time {
+  font-family: 'Jost', sans-serif;
+  font-weight: 300;
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: var(--gold);
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 2px;
+}
+.timeline-event {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--brown-dark);
+  display: block;
+}
+.timeline-desc {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 13px;
+  color: var(--text-light);
+  display: block;
+  margin-top: 2px;
+}
+.timeline-spacer { flex: 1; }
+
+/* =============================================
+   FOOTER
+   ============================================= */
+#footer {
+  background: var(--brown-dark);
+  padding: 60px 24px;
+  text-align: center;
+}
+.footer-monogram {
+  font-family: 'Great Vibes', cursive;
+  font-size: 56px;
+  background: linear-gradient(135deg, var(--gold), var(--gold-pale));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 16px;
+  display: block;
+}
+.footer-line {
+  font-family: 'Jost', sans-serif;
+  font-weight: 200;
+  font-size: 9px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.35);
+  margin-bottom: 8px;
+}
+.footer-date {
+  font-family: 'Cinzel', serif;
+  font-size: 14px;
+  letter-spacing: 2px;
+  color: rgba(201,168,76,0.6);
+}
+
+/* =============================================
+   RESPONSIVE ADJUSTMENTS
+   ============================================= */
+@media (min-width: 500px) {
+  .countdown-grid { gap: 20px; }
+  .oval-frame { width: 260px; height: 320px; }
+}
+@media (min-width: 768px) {
+  .floral-tl, .floral-tr, .floral-bl, .floral-br { width: 240px; height: 240px; }
+}
+
+/* Floating petals animation */
+.petal {
+  position: fixed;
+  pointer-events: none;
+  z-index: 999;
+  animation: petalFall linear forwards;
+  opacity: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+@keyframes petalFall {
+  0%   { opacity: 0;   transform: translateY(-20px) rotate(0deg) translateX(0); }
+  8%   { opacity: 0.75; }
+  88%  { opacity: 0.35; }
+  100% { opacity: 0;   transform: translateY(100vh) rotate(400deg) translateX(55px); }
+}
+</style>
+</head>
+<body>
+
+<!-- =============================================
+     ENVELOPE SECTION
+     ============================================= -->
+<section id="envelope-section">
+  <div class="envelope-wrapper">
+    <div class="envelope-body" id="envelopeBody">
+
+      <!-- Letter — revealed when halves split -->
+      <div class="envelope-letter" id="envelopeLetter">
+        <div class="envelope-letter-text">Martina &amp; Javier<br>August 20, 2025</div>
+      </div>
+
+      <!-- Top half (slides upward) -->
+      <div class="env-half env-top" id="envTop"></div>
+
+      <!-- Bottom half (slides downward) -->
+      <div class="env-half env-bottom" id="envBottom"></div>
+
+      <!-- Centre seam decoration -->
+      <div class="env-seam" id="envSeam"></div>
+
+      <!-- Wax seal — sits on top of everything, centred on the seam -->
+      <div class="wax-seal" id="waxSeal" onclick="openEnvelope()" tabindex="0">
+        <div class="seal-circle" id="sealCircle">
+          <span class="seal-glint"></span>
+          <span class="seal-text">M&amp;J</span>
+        </div>
+      </div>
+
+    </div>
+    <p class="seal-hint" id="sealHint">Press the seal to open</p>
+  </div>
+</section>
+
+<!-- =============================================
+     MAIN INVITATION CONTENT
+     ============================================= -->
+<div id="main-content">
+
+  <!-- ==================== HERO ==================== -->
+  <section id="hero">
+
+    <!-- Floral corner SVGs -->
+    <svg class="floral-tl" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="40" cy="40" r="18" fill="#d4a0a0" opacity="0.7"/>
+      <circle cx="70" cy="25" r="12" fill="#e8c8c0" opacity="0.6"/>
+      <circle cx="20" cy="70" r="14" fill="#b8c4a8" opacity="0.6"/>
+      <circle cx="55" cy="60" r="10" fill="#e8d0a0" opacity="0.5"/>
+      <circle cx="90" cy="45" r="8" fill="#d4a0a0" opacity="0.4"/>
+      <circle cx="30" cy="100" r="10" fill="#c9a84c" opacity="0.25"/>
+      <line x1="40" y1="40" x2="70" y2="25" stroke="#c9a84c" stroke-width="0.5" opacity="0.4"/>
+      <line x1="40" y1="40" x2="20" y2="70" stroke="#b8c4a8" stroke-width="0.5" opacity="0.4"/>
+      <line x1="40" y1="40" x2="55" y2="60" stroke="#c9a84c" stroke-width="0.5" opacity="0.3"/>
+      <ellipse cx="45" cy="35" rx="6" ry="10" fill="#f0dfa0" opacity="0.4" transform="rotate(30 45 35)"/>
+      <ellipse cx="25" cy="55" rx="5" ry="9" fill="#e8c8c0" opacity="0.5" transform="rotate(-20 25 55)"/>
+      <ellipse cx="75" cy="50" rx="5" ry="8" fill="#b8c4a8" opacity="0.45" transform="rotate(60 75 50)"/>
+    </svg>
+
+    <svg class="floral-tr" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="40" cy="40" r="18" fill="#d4a0a0" opacity="0.7"/>
+      <circle cx="70" cy="25" r="12" fill="#e8c8c0" opacity="0.6"/>
+      <circle cx="20" cy="70" r="14" fill="#b8c4a8" opacity="0.6"/>
+      <circle cx="55" cy="60" r="10" fill="#e8d0a0" opacity="0.5"/>
+      <circle cx="90" cy="45" r="8" fill="#d4a0a0" opacity="0.4"/>
+      <ellipse cx="45" cy="35" rx="6" ry="10" fill="#f0dfa0" opacity="0.4" transform="rotate(30 45 35)"/>
+      <ellipse cx="25" cy="55" rx="5" ry="9" fill="#e8c8c0" opacity="0.5" transform="rotate(-20 25 55)"/>
+    </svg>
+
+    <svg class="floral-bl" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="40" cy="40" r="18" fill="#d4a0a0" opacity="0.7"/>
+      <circle cx="70" cy="25" r="12" fill="#e8c8c0" opacity="0.6"/>
+      <circle cx="20" cy="70" r="14" fill="#b8c4a8" opacity="0.6"/>
+      <circle cx="55" cy="60" r="10" fill="#e8d0a0" opacity="0.5"/>
+      <ellipse cx="45" cy="35" rx="6" ry="10" fill="#f0dfa0" opacity="0.4" transform="rotate(30 45 35)"/>
+    </svg>
+
+    <svg class="floral-br" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="40" cy="40" r="18" fill="#d4a0a0" opacity="0.7"/>
+      <circle cx="70" cy="25" r="12" fill="#e8c8c0" opacity="0.6"/>
+      <circle cx="20" cy="70" r="14" fill="#b8c4a8" opacity="0.6"/>
+      <ellipse cx="25" cy="55" rx="5" ry="9" fill="#e8c8c0" opacity="0.5" transform="rotate(-20 25 55)"/>
+    </svg>
+
+    <!-- Oval portrait frame -->
+    <div class="oval-frame reveal">
+      <div class="oval-inner">
+        <p class="oval-pre">We are getting married</p>
+        <div class="couple-names">
+          Martina
+          <span class="ampersand">&amp;</span>
+          Javier
+        </div>
+        <p class="oval-date">August 20 · 2025</p>
+      </div>
+    </div>
+
+    <!-- Hero text -->
+    <p class="hero-tagline reveal reveal-delay-1">Côte d'Azur, France</p>
+    <p class="hero-sub reveal reveal-delay-2"><em>Join us for a celebration of love</em></p>
+
+    <div class="gold-divider reveal reveal-delay-3">
+      <div class="line"></div>
+      <div class="diamond"></div>
+      <div class="line"></div>
+    </div>
+
+    <!-- Beach parallax strip -->
+    <div class="beach-strip"></div>
+  </section>
+
+  <!-- ==================== COUNTDOWN ==================== -->
+  <section id="countdown">
+    <p class="countdown-title reveal">Counting down to forever</p>
+    <p class="countdown-subtitle reveal reveal-delay-1">The big day approaches</p>
+
+    <div class="countdown-frame reveal reveal-delay-2">
+      <div class="countdown-inner-frame"></div>
+      <div class="countdown-grid">
+        <div class="countdown-item">
+          <span class="countdown-number" id="cd-days">00</span>
+          <span class="countdown-label">Days</span>
+        </div>
+        <div class="countdown-item">
+          <span class="countdown-number" id="cd-hours">00</span>
+          <span class="countdown-label">Hours</span>
+        </div>
+        <div class="countdown-item">
+          <span class="countdown-number" id="cd-mins">00</span>
+          <span class="countdown-label">Minutes</span>
+        </div>
+        <div class="countdown-item">
+          <span class="countdown-number" id="cd-secs">00</span>
+          <span class="countdown-label">Seconds</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== INVITATION TEXT ==================== -->
+  <section id="invitation">
+    <p class="invite-pre reveal">With great joy</p>
+    <h2 class="invite-heading reveal reveal-delay-1">Welcome</h2>
+
+    <svg class="floral-divider reveal reveal-delay-2" width="180" height="30" viewBox="0 0 180 30">
+      <line x1="0" y1="15" x2="70" y2="15" stroke="#c9a84c" stroke-width="0.5" opacity="0.6"/>
+      <circle cx="90" cy="15" r="4" fill="none" stroke="#c9a84c" stroke-width="1" opacity="0.6"/>
+      <circle cx="80" cy="15" r="2" fill="#d4a0a0" opacity="0.5"/>
+      <circle cx="100" cy="15" r="2" fill="#d4a0a0" opacity="0.5"/>
+      <line x1="110" y1="15" x2="180" y2="15" stroke="#c9a84c" stroke-width="0.5" opacity="0.6"/>
+      <circle cx="90" cy="8" r="3" fill="#b8c4a8" opacity="0.5"/>
+      <circle cx="90" cy="22" r="3" fill="#e8c8c0" opacity="0.5"/>
+    </svg>
+
+    <p class="invite-body reveal reveal-delay-3">
+      Together with their families,
+    </p>
+    <p class="invite-heading reveal" style="font-size: clamp(32px,9vw,48px); margin-bottom: 12px;">
+      Martina &amp; Javier
+    </p>
+    <p class="invite-body reveal reveal-delay-1">
+      request the honor of your presence<br>
+      as they exchange <em>vows of marriage</em><br>
+      and begin their journey as one.
+    </p>
+
+    <svg class="floral-divider reveal reveal-delay-2" width="120" height="20" viewBox="0 0 120 20">
+      <line x1="0" y1="10" x2="48" y2="10" stroke="#c9a84c" stroke-width="0.5" opacity="0.5"/>
+      <circle cx="60" cy="10" r="4" fill="#e8c8c0" opacity="0.6"/>
+      <line x1="72" y1="10" x2="120" y2="10" stroke="#c9a84c" stroke-width="0.5" opacity="0.5"/>
+    </svg>
+
+    <p class="invite-body reveal reveal-delay-3">
+      <em>Saturday, the twentieth of August<br>
+      Two thousand and twenty-five<br>
+      at five o'clock in the evening</em>
+    </p>
+  </section>
+
+  <!-- ==================== DETAILS ==================== -->
+  <section id="details">
+    <p class="details-title reveal">Event Details</p>
+
+    <div class="details-card reveal reveal-delay-1">
+      <span class="details-card-icon" style="font-size:0;line-height:0;">
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M11 2C7.13 2 4 5.13 4 9c0 5.25 7 11 7 11s7-5.75 7-11c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" fill="#c9a84c" opacity="0.7"/></svg>
+      </span>
+      <h3>Ceremony &amp; Reception</h3>
+      <div class="detail-item">
+        <strong>Venue</strong>
+        Hôtel du Cap-Eden-Roc
+      </div>
+      <div class="detail-item" style="margin-top:8px;">
+        <strong>Location</strong>
+        Boulevard JF Kennedy, Antibes<br>Côte d'Azur, France
+      </div>
+      <div class="detail-item" style="margin-top:8px;">
+        <strong>Date &amp; Time</strong>
+        Saturday, 20 August 2025<br>Ceremony begins at 5:00 PM
+      </div>
+      <div class="btn-group">
+        <a class="btn-gold" href="https://maps.google.com/?q=Hotel+du+Cap+Eden+Roc+Antibes+France" target="_blank">
+          Open in Maps
+        </a>
+        <a class="btn-outline" id="cal-btn" href="#">
+          Add to Calendar
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== DRESS CODE & PROGRAMME ==================== -->
+  <section id="programme">
+    <!-- Dress Code -->
+    <p class="section-title reveal">Attire</p>
+    <p class="section-subtitle reveal reveal-delay-1">Dress Code</p>
+
+    <div class="dress-code-box reveal reveal-delay-2">
+      <div class="dress-icons">
+        <svg width="36" height="44" viewBox="0 0 36 44" fill="none" opacity="0.55">
+          <rect x="13" y="1" width="10" height="10" rx="5" fill="#4a3420"/>
+          <path d="M10 11 L4 44 L18 38 L32 44 L26 11 Q22 15 18 15 Q14 15 10 11Z" fill="#1a1a1a"/>
+          <rect x="14" y="12" width="8" height="18" fill="#c9a84c" opacity="0.4"/>
+        </svg>
+        <svg width="34" height="44" viewBox="0 0 34 44" fill="none" opacity="0.55">
+          <rect x="12" y="1" width="10" height="9" rx="5" fill="#4a3420"/>
+          <path d="M8 10 Q4 16 2 28 Q0 38 17 44 Q34 38 32 28 Q30 16 26 10 Q22 14 17 14 Q12 14 8 10Z" fill="#e8c8c0"/>
+        </svg>
+      </div>
+      <div class="dress-type">Black Tie</div>
+      <p class="dress-note">
+        Formal evening attire is kindly requested.<br>
+        Long gowns or formal cocktail dresses for ladies.<br>
+        Black tuxedo or dinner suit for gentlemen.
+      </p>
+      <div class="dress-palette">
+        <div class="palette-swatch" style="background:#1a1a1a;" title="Black"></div>
+        <div class="palette-swatch" style="background:#c9a84c;" title="Gold"></div>
+        <div class="palette-swatch" style="background:#e8dcc8;" title="Champagne"></div>
+        <div class="palette-swatch" style="background:#f5efe6;" title="Ivory"></div>
+        <div class="palette-swatch" style="background:#b8c4a8;" title="Sage"></div>
+      </div>
+    </div>
+
+    <div class="gold-divider reveal" style="max-width: 300px;">
+      <div class="line"></div>
+      <div class="diamond"></div>
+      <div class="line"></div>
+    </div>
+
+    <!-- Wedding Programme -->
+    <p class="section-title reveal" style="margin-top:48px;">Schedule</p>
+    <p class="section-subtitle reveal reveal-delay-1">Wedding Day Programme</p>
+
+    <div class="timeline">
+      <div class="timeline-item reveal">
+        <div class="timeline-content">
+          <span class="timeline-time">5:00 PM</span>
+          <span class="timeline-event">Ceremony</span>
+          <span class="timeline-desc">Exchange of vows by the sea</span>
+        </div>
+        <div class="timeline-dot"></div>
+        <div class="timeline-spacer"></div>
+      </div>
+
+      <div class="timeline-item reveal reveal-delay-1">
+        <div class="timeline-spacer"></div>
+        <div class="timeline-dot"></div>
+        <div class="timeline-content">
+          <span class="timeline-time">6:00 PM</span>
+          <span class="timeline-event">Cocktail Hour</span>
+          <span class="timeline-desc">Champagne on the terrace</span>
+        </div>
+      </div>
+
+      <div class="timeline-item reveal reveal-delay-2">
+        <div class="timeline-content">
+          <span class="timeline-time">7:30 PM</span>
+          <span class="timeline-event">Dinner</span>
+          <span class="timeline-desc">A gourmet evening feast</span>
+        </div>
+        <div class="timeline-dot"></div>
+        <div class="timeline-spacer"></div>
+      </div>
+
+      <div class="timeline-item reveal reveal-delay-3">
+        <div class="timeline-spacer"></div>
+        <div class="timeline-dot"></div>
+        <div class="timeline-content">
+          <span class="timeline-time">9:00 PM</span>
+          <span class="timeline-event">Dancing</span>
+          <span class="timeline-desc">Music &amp; celebration until midnight</span>
+        </div>
+      </div>
+
+      <div class="timeline-item reveal reveal-delay-4">
+        <div class="timeline-content">
+          <span class="timeline-time">12:00 AM</span>
+          <span class="timeline-event">Farewell</span>
+          <span class="timeline-desc">Sweet goodnight under the stars</span>
+        </div>
+        <div class="timeline-dot"></div>
+        <div class="timeline-spacer"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer id="footer">
+    <div class="gold-divider reveal" style="max-width:220px; margin-bottom:28px;">
+      <div class="line"></div>
+      <div class="diamond"></div>
+      <div class="line"></div>
+    </div>
+    <span class="footer-monogram reveal">M &amp; J</span>
+    <p class="footer-line reveal reveal-delay-1">We look forward to celebrating with you</p>
+    <p class="footer-date reveal reveal-delay-2">August 20 · 2025 · Côte d'Azur</p>
+    <div class="gold-divider reveal reveal-delay-3" style="max-width:120px; margin-top:28px;">
+      <div class="line"></div>
+      <div class="diamond"></div>
+      <div class="line"></div>
+    </div>
+  </footer>
+
+</div><!-- end #main-content -->
+
+<!-- =============================================
+     JAVASCRIPT
+     ============================================= -->
+<script>
+/* --------------------------------------------------
+   1. ENVELOPE OPEN ANIMATION  (split — top up / bottom down)
+   -------------------------------------------------- */
+function openEnvelope() {
+  const seal    = document.getElementById('sealCircle');
+  const wax     = document.getElementById('waxSeal');
+  const envTop  = document.getElementById('envTop');
+  const envBot  = document.getElementById('envBottom');
+  const seam    = document.getElementById('envSeam');
+  const letter  = document.getElementById('envelopeLetter');
+  const hint    = document.getElementById('sealHint');
+  const envSec  = document.getElementById('envelope-section');
+  const mainCont= document.getElementById('main-content');
+
+  // Prevent double-click
+  wax.style.pointerEvents = 'none';
+
+  // Hide hint immediately
+  if (hint) hint.classList.add('hidden');
+
+  // 1. Break the seal
+  seal.classList.add('breaking');
+
+  // 2. After seal shatters → split the envelope halves apart
+  setTimeout(() => {
+    envTop.classList.add('splitting');
+    envBot.classList.add('splitting');
+    seam.classList.add('splitting');
+  }, 420);
+
+  // 3. Reveal the letter card (fades in via CSS transition)
+  setTimeout(() => {
+    letter.classList.add('rising');
+  }, 520);
+
+  // 4. Fade out the whole envelope overlay → show invitation
+  setTimeout(() => {
+    envSec.classList.add('hidden');
+    mainCont.classList.add('visible');
+    document.body.style.overflow = 'auto';
+    spawnPetals();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, 1700);
+}
+
+// Start with body overflow hidden
+document.body.style.overflow = 'hidden';
+
+/* --------------------------------------------------
+   2. FLOATING PETALS  (SVG shapes, no emoji)
+   -------------------------------------------------- */
+function spawnPetals() {
+  let count = 0;
+  const max = 22;
+
+  const petalShapes = [
+    // Delicate teardrop / petal SVG paths
+    `<svg width="18" height="22" viewBox="0 0 18 22" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 1 C14 6, 16 12, 9 21 C2 12, 4 6, 9 1Z" fill="rgba(212,160,160,0.72)"/></svg>`,
+    `<svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><ellipse cx="7" cy="7" rx="5" ry="7" fill="rgba(184,196,168,0.68)"/></svg>`,
+    `<svg width="16" height="10" viewBox="0 0 16 10" fill="none" xmlns="http://www.w3.org/2000/svg"><ellipse cx="8" cy="5" rx="8" ry="5" fill="rgba(232,200,192,0.65)"/></svg>`,
+    `<svg width="10" height="16" viewBox="0 0 10 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 1 C9 5, 9 11, 5 15 C1 11, 1 5, 5 1Z" fill="rgba(201,168,76,0.45)"/></svg>`,
+    `<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 1 Q11 6, 6 11 Q1 6, 6 1Z" fill="rgba(228,208,160,0.60)"/></svg>`,
+  ];
+
+  const interval = setInterval(() => {
+    if (count >= max) { clearInterval(interval); return; }
+
+    const petal = document.createElement('div');
+    petal.classList.add('petal');
+    petal.innerHTML = petalShapes[Math.floor(Math.random() * petalShapes.length)];
+    petal.style.left = (Math.random() * 102) + 'vw';
+    petal.style.top  = '-30px';
+    petal.style.animationDuration  = (4 + Math.random() * 5) + 's';
+    petal.style.animationDelay     = (Math.random() * 0.6) + 's';
+    document.body.appendChild(petal);
+
+    petal.addEventListener('animationend', () => petal.remove());
+    count++;
+  }, 180);
+}
+
+/* --------------------------------------------------
+   3. COUNTDOWN TIMER
+   -------------------------------------------------- */
+function updateCountdown() {
+  // Wedding date: August 20, 2025 at 17:00
+  const wedding = new Date('2025-08-20T17:00:00').getTime();
+  const now     = Date.now();
+  const diff    = wedding - now;
+
+  if (diff <= 0) {
+    // Wedding day!
+    document.getElementById('cd-days').textContent  = '00';
+    document.getElementById('cd-hours').textContent = '00';
+    document.getElementById('cd-mins').textContent  = '00';
+    document.getElementById('cd-secs').textContent  = '00';
+    return;
+  }
+
+  const days    = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const hours   = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+  const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+  const pad = n => String(n).padStart(2, '0');
+  document.getElementById('cd-days').textContent  = pad(days);
+  document.getElementById('cd-hours').textContent = pad(hours);
+  document.getElementById('cd-mins').textContent  = pad(minutes);
+  document.getElementById('cd-secs').textContent  = pad(seconds);
+}
+
+updateCountdown();
+setInterval(updateCountdown, 1000);
+
+/* --------------------------------------------------
+   4. SCROLL REVEAL with IntersectionObserver
+   -------------------------------------------------- */
+const observerOptions = {
+  root: null,
+  rootMargin: '0px 0px -60px 0px',
+  threshold: 0.12
+};
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      observer.unobserve(entry.target); // Animate once
+    }
+  });
+}, observerOptions);
+
+// Observe all .reveal elements
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+/* --------------------------------------------------
+   5. ADD TO CALENDAR BUTTON
+   -------------------------------------------------- */
+document.getElementById('cal-btn').addEventListener('click', (e) => {
+  e.preventDefault();
+
+  // Google Calendar link
+  const startDate = '20250820T170000';
+  const endDate   = '20250821T000000';
+  const title     = encodeURIComponent('Martina & Javier Wedding');
+  const location  = encodeURIComponent('Hotel du Cap-Eden-Roc, Boulevard JF Kennedy, Antibes, France');
+  const details   = encodeURIComponent('Join us to celebrate the marriage of Martina & Javier');
+
+  const gcalUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${startDate}/${endDate}&details=${details}&location=${location}`;
+
+  // Open in new tab
+  window.open(gcalUrl, '_blank');
+});
+
+/* --------------------------------------------------
+   6. PARALLAX on scroll (subtle hero effect)
+   -------------------------------------------------- */
+window.addEventListener('scroll', () => {
+  const scrollY = window.scrollY;
+  const beachStrip = document.querySelector('.beach-strip');
+  const ovalFrame  = document.querySelector('.oval-frame');
+
+  if (beachStrip) {
+    beachStrip.style.transform = `translateY(${scrollY * 0.3}px)`;
+  }
+  if (ovalFrame) {
+    ovalFrame.style.transform  = `translateY(${scrollY * 0.07}px)`;
+  }
+}, { passive: true });
+</script>
+</body>
+</html>
